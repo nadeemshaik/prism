@@ -1,0 +1,5 @@
+.Body__container {
+  height: calc(100% - 60px);
+  display: flex;
+  flex-direction: row;
+}

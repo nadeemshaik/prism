@@ -1,0 +1,10 @@
+.AssetGrid__container {
+  width: calc(100% - 100px);
+  height: 100%;
+  background-color: #eee;
+}
+
+.AssetGrid__assetRow {
+  display: flex;
+  justify-content: space-between;
+}

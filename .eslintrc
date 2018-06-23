@@ -1,0 +1,25 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+        "jsx": true,
+        "modules": true,
+        "classes": true,
+        "arrowFunctions": true,
+    }
+  },
+  "env": {
+    "browser": true,
+    "jasmine": true,
+    "node": true
+  },
+  "rules": {
+      "semi": 2,
+      "react/jsx-uses-react": "error",
+      "react/jsx-uses-vars": "error",
+  },
+  "plugins": [
+    "react"
+  ]
+}
