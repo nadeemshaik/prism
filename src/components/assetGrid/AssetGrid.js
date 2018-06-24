@@ -47,7 +47,7 @@ class AssetGrid extends PureComponent {
       <div className="AssetGrid__assetRow" key={index}>
         {
           _map(assetRow.assets, (asset, assetIndex) => {
-            return generateAsset(asset, assetIndex, assetRow.rowHeight);
+            return generateAsset(asset, {assetIndex, assetHeight: assetRow.rowHeight, assetClass: 'AssetGrid__assetContainer'});
           })
         }
       </div>

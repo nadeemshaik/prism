@@ -6,5 +6,19 @@
 
 .AssetGrid__assetRow {
   display: flex;
-  justify-content: space-between;
+  padding-top: 3px;
+}
+
+.AssetGrid__assetRow:last-child {
+  padding-bottom: 3px;
+}
+
+.AssetGrid__assetContainer {
+  padding-right: 3px;
+  flex-shrink: 0;
+  flex-grow: 1;
+}
+
+.AssetGrid__assetContainer:last-child {
+  padding-right: 0;
 }
