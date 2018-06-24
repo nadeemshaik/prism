@@ -17,6 +17,7 @@ class InfiniteScroller extends PureComponent {
           isInfiniteLoading={props.isLoading}
           infiniteLoadBeginEdgeOffset={props.loadingOffset}
           loadingSpinnerDelegate={props.loadingSpinner}
+          className={props.containerClassName}
           >
             {_map(props.itemRows, props.rowRenderer)}
           </InfiniteScroll>
@@ -36,11 +37,13 @@ InfiniteScroller.propTypes = {
   loadingOffset: PropTypes.number,
   loadingSpinner: PropTypes.node,
   rowRenderer: PropTypes.func.isRequired,
+  containerClassName: PropTypes.string,
 };
 
 InfiniteScroller.defaultProps = {
   loadingOffset: 250,
   isLoading: false,
+  containerClassName: '',
 };
 
 export default InfiniteScroller;

@@ -6,9 +6,12 @@ import _map from 'lodash/map';
 
 import InfiniteScroller from '../infiniteScroller';
 import {addAssetsToRows} from '../../utils/assetGrid';
+import getScrollBarWidth from '../../utils/getScrollBarWidth';
 import {generateAsset} from '../../generators/asset';
 
 import {generateDummyAssets} from '../../fixtures/assets';
+
+const PADDING_BESIDES_GRID = 100;
 
 class AssetGrid extends PureComponent {
   state = {
@@ -21,7 +24,7 @@ class AssetGrid extends PureComponent {
   componentDidMount() {
     this.setState({
       containerHeight: this.assetGridNode.clientHeight,
-      containerWidth: this.assetGridNode.clientWidth,
+      containerWidth: this.assetGridNode.clientWidth - getScrollBarWidth(),
     });
   }
 
@@ -31,7 +34,7 @@ class AssetGrid extends PureComponent {
 
   loadMoreAssets = () => {
     this.setState({isLoading: true});
-    const assetRows = addAssetsToRows(this.state.assetRows, generateDummyAssets(), this.state.containerWidth);
+    const assetRows = addAssetsToRows(this.state.assetRows, generateDummyAssets(), this.state.containerWidth - PADDING_BESIDES_GRID);
 
     setTimeout(() => {
       this.setState({
@@ -60,12 +63,13 @@ class AssetGrid extends PureComponent {
       <div className='AssetGrid__container' ref={this.setAssetGridRef}>
         {
           state.containerHeight ? <InfiniteScroller
-            containerHeight={state.containerHeight}
-            elementHeight={state.rowHeights}
-            loadMoreItems={this.loadMoreAssets}
-            isLoading={state.isLoading}
-            itemRows={state.assetRows}
-            rowRenderer={this.renderAssetRow}
+          containerHeight={state.containerHeight}
+          elementHeight={state.rowHeights}
+          loadMoreItems={this.loadMoreAssets}
+          isLoading={state.isLoading}
+          itemRows={state.assetRows}
+          rowRenderer={this.renderAssetRow}
+          containerClassName="AssetGrid__scrollerContainer"
           /> : null
         }
       </div>

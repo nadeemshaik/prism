@@ -1,7 +1,19 @@
 .AssetGrid__container {
+  /* SIDEBAR_WIDTH */
   width: calc(100% - 100px);
   height: 100%;
-  background-color: #eee;
+}
+
+.AssetGrid__scrollerContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.AssetGrid__scrollerContainer > div {
+  /* PADDING_BESIDES_GRID */
+  width: calc(100% - 100px);
+  margin-right: 50px;
 }
 
 .AssetGrid__assetRow {
@@ -15,8 +27,8 @@
 
 .AssetGrid__assetContainer {
   padding-right: 3px;
-  flex-shrink: 0;
   flex-grow: 1;
+  flex-shrink: 0;
 }
 
 .AssetGrid__assetContainer:last-child {
