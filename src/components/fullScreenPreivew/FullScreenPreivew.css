@@ -1,0 +1,33 @@
+.FullScreenPreivew_container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.FullScreenPreivew_asset {
+  height: calc(100% - 60px);
+}
+
+.FullScreenPreivew_header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 60px;
+  width: 100%;
+  padding: 0 40px;
+}
+
+.FullScreenPreivew_closeIcon {
+  color: white;
+  cursor: pointer;
+}
+
+.FullScreenPreivew_closeIcon:hover {
+  color: #039BE5;
+}

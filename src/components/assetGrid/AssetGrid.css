@@ -29,6 +29,7 @@
   padding-right: 3px;
   flex-grow: 1;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .AssetGrid__assetContainer:last-child {

@@ -3,53 +3,75 @@ import ASSET_TYPES from '../constants/assetTypes';
 
 const dummtAssets = [
   {
-    src: 'http://www.fujifilm.com.my/Products/digital_cameras/x/fujifilm_x20/sample_images/img/index/ff_x20_008.JPG',
-    width: 4000,
-    height: 3000,
-    assetType: ASSET_TYPES.IMAGE,
-  },
-  {
-    src: 'https://cdn.pixabay.com/photo/2015/06/19/17/58/sample-815141_960_720.jpg',
-    width: 250,
-    height: 250,
-    assetType: ASSET_TYPES.IMAGE,
-  },
-  {
-    src: 'http://www.cameraegg.org/wp-content/uploads/2015/06/canon-powershot-g3-x-sample-images-1.jpg',
+    src: 'image_1.jpg',
+    preview: 'image_1_preview.jpg',
     width: 3000,
     height: 2000,
     assetType: ASSET_TYPES.IMAGE,
   },
   {
-    src: 'https://kbob.github.io/images/sample-4.jpg',
-    width: 3264,
-    height: 2448,
-    assetType: ASSET_TYPES.IMAGE,
-  },
-  {
-    src: 'http://imaging.nikon.com/lineup/lens/zoom/normalzoom/af-s_dx_18-300mmf_35-56g_ed_vr/img/sample/sample1_l.jpg',
-    width: 476,
-    height: 717,
-    assetType: ASSET_TYPES.IMAGE,
-  },
-  {
-    src: 'https://i.ytimg.com/vi/RHLknisJ-Sg/maxresdefault.jpg',
-    width: 1280,
-    height: 720,
-    assetType: ASSET_TYPES.IMAGE,
-  },
-  {
-    src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVMguScuZkiJraTJBmQPVKgaNh4AJvviRkKQVw8xDqmbaW-tUX',
+    src: 'image_2.jpg',
+    preview: 'image_2_preview.jpg',
     width: 259,
     height: 194,
     assetType: ASSET_TYPES.IMAGE,
   },
   {
-    src: 'http://media.gjczz.com/images/ebde01f3bf2f8d9e49aff61b1d8b2cde.jpeg',
+    src: 'image_3.jpg',
+    preview: 'image_3_preview.jpg',
+    width: 1280,
+    height: 720,
+    assetType: ASSET_TYPES.IMAGE,
+  },
+  {
+    src: 'image_4.jpg',
+    preview: 'image_4_preview.jpg',
+    width: 476,
+    height: 717,
+    assetType: ASSET_TYPES.IMAGE,
+  },
+  {
+    src: 'image_5.jpg',
+    preview: 'image_5_preview.jpg',
+    width: 3264,
+    height: 2448,
+    assetType: ASSET_TYPES.IMAGE,
+  },
+  {
+    src: 'image_6.jpg',
+    preview: 'image_6_preview.jpg',
+    width: 270,
+    height: 202,
+    assetType: ASSET_TYPES.IMAGE,
+  },
+  {
+    src: 'image_7.JPG',
+    preview: 'image_7_preview.JPG',
+    width: 4000,
+    height: 3000,
+    assetType: ASSET_TYPES.IMAGE,
+  },
+  {
+    src: 'image_8.jpeg',
+    preview: 'image_8_preview.jpeg',
     width: 629,
     height: 419,
     assetType: ASSET_TYPES.IMAGE,
   },
+  {
+    src: 'video_1.mp4',
+    preview: 'video_1_preview.PNG',
+    width: 1280,
+    height: 720,
+    assetType: ASSET_TYPES.VIDEO,
+  },
+  {
+    src: 'video_2.mp4',
+    preview: 'video_1_preview.PNG',
+    width: 1280,
+    height: 720,
+    assetType: ASSET_TYPES.VIDEO,
+  }
 ];
 
 export const generateDummyAssets = () => {

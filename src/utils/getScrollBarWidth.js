@@ -1,4 +1,4 @@
-export default () => {
+const getScrollBarWidth = () => {
   const outer = document.createElement("div");
   outer.style.visibility = "hidden";
   outer.style.width = "100px";
@@ -21,4 +21,6 @@ export default () => {
   outer.parentNode.removeChild(outer);
 
   return widthNoScroll - widthWithScroll;
-}
+};
+
+export default getScrollBarWidth;
