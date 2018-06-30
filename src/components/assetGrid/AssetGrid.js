@@ -6,6 +6,7 @@ import '../assetCards/assetCards.css';
 
 //libs
 import _map from 'lodash/map';
+import _debounce from 'lodash/debounce';
 
 //components
 import FullScreenPreivew from '../fullScreenPreivew';
@@ -36,11 +37,31 @@ class AssetGrid extends PureComponent {
   };
 
   componentDidMount() {
-      this.setState({
-        containerHeight: this.assetGridNode.clientHeight,
-        containerWidth: this.assetGridNode.clientWidth - getScrollBarWidth(),
-      });
+    window.onresize = (event) => {
+      this.setGridDimensions();
+      this.reCalculateAssetRows([], this.state.assetRows);
+    };
+    this.setGridDimensions();
   }
+
+  getAssetRows = (currentAssets, newAssets) => {
+    return addAssetsToRows(currentAssets, newAssets, this.state.containerWidth - PADDING_BESIDES_GRID);
+  };
+
+  reCalculateAssetRows = _debounce((currentAssets, newAssets) => {
+    const assetRows = this.getAssetRows(currentAssets, newAssets);
+    this.setState({
+      assetRows,
+      rowHeights: _map(assetRows, 'rowHeight'),
+    });
+  }, 300);
+
+  setGridDimensions = () => {
+    this.setState({
+      containerHeight: this.assetGridNode.clientHeight,
+      containerWidth: this.assetGridNode.clientWidth - getScrollBarWidth(),
+    });
+  };
 
   setAssetGridRef = ref => {
     this.assetGridNode = ref;
@@ -50,10 +71,9 @@ class AssetGrid extends PureComponent {
     this.setState({isLoading: true});
     fetchAssets()
       .then(assets => {
-        const assetRows = addAssetsToRows(this.state.assetRows, assets, this.state.containerWidth - PADDING_BESIDES_GRID);
+        this.reCalculateAssetRows(this.state.assetRows, assets);
+        this.reCalculateAssetRows.flush();
         this.setState({
-          assetRows,
-          rowHeights: _map(assetRows, 'rowHeight'),
           isLoading: false,
         });
       });
