@@ -2,6 +2,7 @@ import {MAX_ASSET_HEIGHT} from '../constants/asset';
 import update from 'immutability-helper';
 
 import _forEach from 'lodash/forEach';
+import _reduce from 'lodash/reduce';
 
 const genereateAssetRow = () => {
   return {
@@ -9,6 +10,13 @@ const genereateAssetRow = () => {
     isFull: false,
     rowHeight: MAX_ASSET_HEIGHT,
   };
+};
+
+export const getAssetsFromAssetRows = assetRows => {
+  return _reduce(assetRows, (assets, assetRow) => {
+    assets.push(...assetRow.assets);
+    return assets;
+  }, []);
 };
 
 const getAssetsCobinedAspectRatio = assets => {

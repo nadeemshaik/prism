@@ -13,7 +13,7 @@ import FullScreenPreivew from '../fullScreenPreivew';
 import InfiniteScroller from '../infiniteScroller';
 
 //utils
-import {addAssetsToRows} from '../../utils/assetGrid';
+import {addAssetsToRows, getAssetsFromAssetRows} from '../../utils/assetGrid';
 import getScrollBarWidth from '../../utils/getScrollBarWidth';
 
 //services
@@ -39,7 +39,7 @@ class AssetGrid extends PureComponent {
   componentDidMount() {
     window.onresize = (event) => {
       this.setGridDimensions();
-      this.reCalculateAssetRows([], this.state.assetRows);
+      this.reCalculateAssetRows([], getAssetsFromAssetRows(this.state.assetRows));
     };
     this.setGridDimensions();
   }
@@ -87,25 +87,54 @@ class AssetGrid extends PureComponent {
     this.setState({fullScreenAsset: undefined});
   }
 
+  renderAssetCard(asset, assetIndex, assetHeight) {
+    const AssetCard = ASSET_TYPE_TO_CARD[AssetReader.type(asset)];
+    return (
+      <AssetCard
+        key={AssetReader.id(asset)}
+        asset={asset}
+        assetIndex={assetIndex}
+        assetHeight={assetHeight}
+        assetClass='AssetGrid__assetContainer'
+        onClick={() => {this.showAssetPreview(asset)}}
+      />
+    );
+  }
+
   renderAssetRow = (assetRow, index) => {
     const that = this;
     return (
       <div className="AssetGrid__assetRow" key={index}>
         {
-          _map(assetRow.assets, (asset, assetIndex) => {
-            const AssetCard = ASSET_TYPE_TO_CARD[AssetReader.type(asset)];
-            return (
-              <AssetCard
-                asset={asset}
-                assetIndex={assetIndex}
-                assetHeight={assetRow.rowHeight}
-                assetClass='AssetGrid__assetContainer'
-                onClick={() => {that.showAssetPreview(asset)}}
-              />
-            )
-          })
+          _map(assetRow.assets, (asset, assetIndex) => (
+            this.renderAssetCard(asset, assetIndex, assetRow.rowHeight)
+          ))
         }
       </div>
+    );
+  }
+
+  renderFullscreenPreview() {
+    return (
+      <FullScreenPreivew
+        asset={this.state.fullScreenAsset}
+        onClosePreview={this.closePreview}
+      />
+    );
+  }
+
+  renderInfiniteScroller() {
+    const {state}  = this;
+    return (
+      <InfiniteScroller
+        containerHeight={state.containerHeight}
+        elementHeight={state.rowHeights}
+        loadMoreItems={this.loadMoreAssets}
+        isLoading={state.isLoading}
+        itemRows={state.assetRows}
+        rowRenderer={this.renderAssetRow}
+        containerClassName="AssetGrid__scrollerContainer"
+      />
     );
   }
 
@@ -113,23 +142,8 @@ class AssetGrid extends PureComponent {
     const {state} = this;
     return (
       <div className='AssetGrid__container' ref={this.setAssetGridRef}>
-        {
-          state.containerHeight ? <InfiniteScroller
-          containerHeight={state.containerHeight}
-          elementHeight={state.rowHeights}
-          loadMoreItems={this.loadMoreAssets}
-          isLoading={state.isLoading}
-          itemRows={state.assetRows}
-          rowRenderer={this.renderAssetRow}
-          containerClassName="AssetGrid__scrollerContainer"
-          /> : null
-        }
-        {state.fullScreenAsset ? (
-          <FullScreenPreivew
-            asset={state.fullScreenAsset}
-            onClosePreview={this.closePreview}
-          />
-        ) :null}
+        {state.containerHeight ? this.renderInfiniteScroller() : null}
+        {state.fullScreenAsset ? this.renderFullscreenPreview() :null}
       </div>
     );
   }
