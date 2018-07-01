@@ -1,7 +1,7 @@
-import VideoPreview from './video';
-import ImagePreview from './image';
+import VideoCard from './video';
+import ImageCard from './image';
 
 export default {
-  VideoPreview,
-  ImagePreview,
+  VideoCard,
+  ImageCard,
 };

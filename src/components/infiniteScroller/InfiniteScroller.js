@@ -6,6 +6,16 @@ import _map from 'lodash/map';
 
 class InfiniteScroller extends PureComponent {
 
+  renderInfinityRows() {
+    const {props} = this;
+    let itemsRendered = 0;
+    return _map(props.itemRows, (itemRow, rowIndex) => {
+      const rowNode = props.rowRenderer(itemRow, itemsRendered);
+      itemsRendered += itemRow.assets.length;
+      return rowNode;
+    });
+  }
+
   render() {
     const {props} = this;
     return (
@@ -19,7 +29,7 @@ class InfiniteScroller extends PureComponent {
           loadingSpinnerDelegate={props.loadingSpinner}
           className={props.containerClassName}
           >
-            {_map(props.itemRows, props.rowRenderer)}
+            {this.renderInfinityRows()}
           </InfiniteScroll>
       </div>
     );

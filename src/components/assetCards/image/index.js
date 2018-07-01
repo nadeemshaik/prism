@@ -1,3 +1,3 @@
-import ImagePreview from './ImagePreview';
+import ImageCard from './ImageCard';
 
-export default ImagePreview;
+export default ImageCard;

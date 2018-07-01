@@ -1,3 +1,3 @@
-import VideoPreview from './VideoPreview';
+import VideoCard from './VideoCard';
 
-export default VideoPreview;
+export default VideoCard;

@@ -59,13 +59,21 @@ export const addAssetsToRows = (assetRows, assets, rowWidth) => {
   let updatedAssetRows = assetRows,
     lastAssetRow = assetRows[assetRows.length] || genereateAssetRow();
 
+  //in case lastAssetRow adds new items, we need to replace it rather than add a new row
+  let shouldSplice = !lastAssetRow.isFull;
   _forEach(assets, asset => {
     lastAssetRow = addAssetToRow(lastAssetRow, asset, rowWidth);
 
     if (lastAssetRow.isFull) {
-      updatedAssetRows = update(updatedAssetRows, {$push: [lastAssetRow]});
+      const updateOperation = shouldSplice ? {$splice: [[assetRows.length, 1, lastAssetRow]]} : {$push: [lastAssetRow]};
+      updatedAssetRows = update(updatedAssetRows, updateOperation);
+      shouldSplice = false;
     }
   });
+
+  if (!lastAssetRow.isFull) {
+    updatedAssetRows = update(updatedAssetRows, {$push: [lastAssetRow]});
+  }
 
   return updatedAssetRows;
 };

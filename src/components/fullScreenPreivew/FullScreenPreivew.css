@@ -1,4 +1,4 @@
-.FullScreenPreivew_container {
+.FullScreenPreivew__container {
   position: absolute;
   top: 0;
   left: 0;
@@ -10,11 +10,12 @@
   align-items: center;
 }
 
-.FullScreenPreivew_asset {
-  height: calc(100% - 60px);
+.FullScreenPreivew__asset {
+  max-height: calc(100% - 60px);
+    max-width: 100%;
 }
 
-.FullScreenPreivew_header {
+.FullScreenPreivew__header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -23,11 +24,11 @@
   padding: 0 40px;
 }
 
-.FullScreenPreivew_closeIcon {
+.FullScreenPreivew__closeIcon {
   color: white;
   cursor: pointer;
 }
 
-.FullScreenPreivew_closeIcon:hover {
+.FullScreenPreivew__closeIcon:hover {
   color: #039BE5;
 }

@@ -7,6 +7,7 @@ import '../assetCards/assetCards.css';
 //libs
 import _map from 'lodash/map';
 import _debounce from 'lodash/debounce';
+import _isUndefined from 'lodash/isUndefined';
 
 //components
 import FullScreenPreivew from '../fullScreenPreivew';
@@ -33,7 +34,7 @@ class AssetGrid extends PureComponent {
     assetRows: [],
     rowHeights: [],
     isLoading: false,
-    fullScreenAsset: undefined,
+    previewAssetIndex: undefined,
   };
 
   componentDidMount() {
@@ -79,12 +80,12 @@ class AssetGrid extends PureComponent {
       });
   }
 
-  showAssetPreview = (fullScreenAsset) => {
-    this.setState({fullScreenAsset});
+  showAssetPreview = (previewAssetIndex) => {
+    this.setState({previewAssetIndex});
   }
 
   closePreview = () => {
-    this.setState({fullScreenAsset: undefined});
+    this.setState({previewAssetIndex: undefined});
   }
 
   renderAssetCard(asset, assetIndex, assetHeight) {
@@ -93,21 +94,20 @@ class AssetGrid extends PureComponent {
       <AssetCard
         key={AssetReader.id(asset)}
         asset={asset}
-        assetIndex={assetIndex}
         assetHeight={assetHeight}
         assetClass='AssetGrid__assetContainer'
-        onClick={() => {this.showAssetPreview(asset)}}
+        onClick={() => {this.showAssetPreview(assetIndex)}}
       />
     );
   }
 
-  renderAssetRow = (assetRow, index) => {
+  renderAssetRow = (assetRow, assetsRenderedCount) => {
     const that = this;
     return (
-      <div className="AssetGrid__assetRow" key={index}>
+      <div className="AssetGrid__assetRow" key={assetsRenderedCount}>
         {
           _map(assetRow.assets, (asset, assetIndex) => (
-            this.renderAssetCard(asset, assetIndex, assetRow.rowHeight)
+            this.renderAssetCard(asset, assetsRenderedCount + assetIndex, assetRow.rowHeight)
           ))
         }
       </div>
@@ -117,7 +117,8 @@ class AssetGrid extends PureComponent {
   renderFullscreenPreview() {
     return (
       <FullScreenPreivew
-        asset={this.state.fullScreenAsset}
+        assets={getAssetsFromAssetRows(this.state.assetRows)}
+        currentIndex={this.state.previewAssetIndex}
         onClosePreview={this.closePreview}
       />
     );
@@ -143,7 +144,7 @@ class AssetGrid extends PureComponent {
     return (
       <div className='AssetGrid__container' ref={this.setAssetGridRef}>
         {state.containerHeight ? this.renderInfiniteScroller() : null}
-        {state.fullScreenAsset ? this.renderFullscreenPreview() :null}
+        {!_isUndefined(state.previewAssetIndex) ? this.renderFullscreenPreview() :null}
       </div>
     );
   }
