@@ -14,6 +14,6 @@ export const CONTROL_CLASSES = {
 };
 
 export const CONTROL_ICONS = {
-  [CONTROL_TYPES.LEFT]: 'chevron-circle-left',
-  [CONTROL_TYPES.RIGHT]: 'chevron-circle-right',
+  [CONTROL_TYPES.LEFT]: 'chevron-left',
+  [CONTROL_TYPES.RIGHT]: 'chevron-right',
 };

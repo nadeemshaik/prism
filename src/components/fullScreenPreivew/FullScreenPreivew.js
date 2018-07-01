@@ -31,7 +31,7 @@ class FullScreenPreivew extends PureComponent {
   renderHeader = () => {
     return (
       <div className="FullScreenPreivew__header">
-        <FontAwesomeIcon icon="times" className="FullScreenPreivew__navIcon" size="1x" onClick={this.props.onClosePreview} />
+        <FontAwesomeIcon icon="arrow-left" className="FullScreenPreivew__navIcon" size="1x" onClick={this.props.onClosePreview} />
       </div>
     );
   };
@@ -39,7 +39,9 @@ class FullScreenPreivew extends PureComponent {
   renderNavControls = (controlType) => {
     return (
       <div className={`FullScreenPreivew__control-section ${CONTROL_SECTION_CLASSES[controlType]}`}>
-        <FontAwesomeIcon icon={CONTROL_ICONS[controlType]} className={`FullScreenPreivew__control ${CONTROL_CLASSES[controlType]} FullScreenPreivew__navIcon FullScreenPreivew__controlIcon`} size="3x" onClick={this.controlToIndexer[controlType]} />
+        <div className={`FullScreenPreivew__control ${CONTROL_CLASSES[controlType]} `} onClick={this.controlToIndexer[controlType]} >
+          <FontAwesomeIcon icon={CONTROL_ICONS[controlType]} className={`FullScreenPreivew__navIcon FullScreenPreivew__controlIcon`}/>
+        </div>
       </div>
     );
   };

@@ -20,11 +20,17 @@
 .FullScreenPreivew__asset {
   max-height: 100%;
   max-width: 100%;
+
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
 .FullScreenPreivew__header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   height: 60px;
   width: 100%;
@@ -34,19 +40,20 @@
 .FullScreenPreivew__navIcon {
   color: white;
   cursor: pointer;
+  font-size: 20px;
 }
 
 .FullScreenPreivew__controlIcon {
-  opacity: 0.5;
+  font-size: 20px;
 }
 
-.FullScreenPreivew__navIcon:hover {
+/* .FullScreenPreivew__navIcon:hover {
   color: #039BE5;
-}
+} */
 
 .FullScreenPreivew__control-section {
   position: absolute;
-  width: 50%;
+  width: 20%;
   height: 100%;
   top: 0;
 }
@@ -63,10 +70,18 @@
   position: absolute;
   top: 50%;
   display: none;
+  padding: 10px;
+  border-radius: 50%;
+  background: rgba(66,66,66,0.54);
+  width: 56px;
+  height: 56px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .FullScreenPreivew__control-section:hover > .FullScreenPreivew__control {
-  display: block;
+  display: flex;
 }
 
 .FullScreenPreivew__control-left {
