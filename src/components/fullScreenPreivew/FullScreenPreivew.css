@@ -7,12 +7,19 @@
   background: black;
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+.FullScreenPreivew__body {
+  position: relative;
+  height: calc(100% - 60px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .FullScreenPreivew__asset {
-  max-height: calc(100% - 60px);
-    max-width: 100%;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .FullScreenPreivew__header {
@@ -24,11 +31,48 @@
   padding: 0 40px;
 }
 
-.FullScreenPreivew__closeIcon {
+.FullScreenPreivew__navIcon {
   color: white;
   cursor: pointer;
 }
 
-.FullScreenPreivew__closeIcon:hover {
+.FullScreenPreivew__controlIcon {
+  opacity: 0.5;
+}
+
+.FullScreenPreivew__navIcon:hover {
   color: #039BE5;
+}
+
+.FullScreenPreivew__control-section {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  top: 0;
+}
+
+.FullScreenPreivew__control-section-left {
+  left: 0;
+}
+
+.FullScreenPreivew__control-section-right {
+  right: 0;
+}
+
+.FullScreenPreivew__control {
+  position: absolute;
+  top: 50%;
+  display: none;
+}
+
+.FullScreenPreivew__control-section:hover > .FullScreenPreivew__control {
+  display: block;
+}
+
+.FullScreenPreivew__control-left {
+  left: 10px;
+}
+
+.FullScreenPreivew__control-right {
+  right: 10px;
 }

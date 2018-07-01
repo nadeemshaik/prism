@@ -5,22 +5,62 @@ import './FullScreenPreivew.css';
 import AssetReader from '../../readers/asset';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {STORAGE_PATH} from '../../constants/asset';
+import {CONTROL_TYPES, CONTROL_SECTION_CLASSES, CONTROL_CLASSES, CONTROL_ICONS} from './constants/controls';
 
 class FullScreenPreivew extends PureComponent {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentIndex: props.currentIndex,
+    };
+    this.controlToIndexer = {
+      [CONTROL_TYPES.LEFT]: this.decreaseIndex,
+      [CONTROL_TYPES.RIGHT]: this.increaseIndex,
+    };
+  }
+
+  increaseIndex = () => {
+    this.setState({currentIndex: this.state.currentIndex + 1});
+  };
+
+  decreaseIndex = () => {
+    this.setState({currentIndex: this.state.currentIndex - 1});
+  };
+
   renderHeader = () => {
     return (
       <div className="FullScreenPreivew__header">
-        <FontAwesomeIcon icon="times" className="FullScreenPreivew__closeIcon" size="1x" onClick={this.props.onClosePreview} />
+        <FontAwesomeIcon icon="times" className="FullScreenPreivew__navIcon" size="1x" onClick={this.props.onClosePreview} />
       </div>
     );
   };
 
+  renderNavControls = (controlType) => {
+    return (
+      <div className={`FullScreenPreivew__control-section ${CONTROL_SECTION_CLASSES[controlType]}`}>
+        <FontAwesomeIcon icon={CONTROL_ICONS[controlType]} className={`FullScreenPreivew__control ${CONTROL_CLASSES[controlType]} FullScreenPreivew__navIcon FullScreenPreivew__controlIcon`} size="3x" onClick={this.controlToIndexer[controlType]} />
+      </div>
+    );
+  };
+
+  renderBody() {
+    const {assets} = this.props,
+      {currentIndex} = this.state;
+    return (
+      <div className="FullScreenPreivew__body">
+        <img src={`${STORAGE_PATH}/${assets[currentIndex].src}`} className="FullScreenPreivew__asset" />
+        {currentIndex !== 0 ? this.renderNavControls(CONTROL_TYPES.LEFT) : null}
+        {currentIndex !== assets.length - 1 ? this.renderNavControls(CONTROL_TYPES.RIGHT) : null}
+      </div>
+    );
+  }
+
   render() {
-    const {props} = this;
     return (
       <div className="FullScreenPreivew__container">
         {this.renderHeader()}
-        <img src={`${STORAGE_PATH}/${props.assets[props.currentIndex].src}`} className="FullScreenPreivew__asset" />
+        {this.renderBody()}
       </div>
     );
   }
