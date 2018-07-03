@@ -1,3 +1,3 @@
-import AssetGrid from './AssetGrid';
+import AssetGrid from './AssetGridContainer';
 
 export default AssetGrid;

@@ -3,6 +3,9 @@ import AssetCards from '../components/assetCards';
 
 export const MAX_ASSET_HEIGHT = 250;
 
+export const PADDING_TOP_IMAGE = 4;
+export const PADDING_LEFT_IMAGE = 4;
+
 export const STORAGE_PATH = 'http://localhost:4000/storage';
 
 export const ASSET_TYPE_TO_CARD = {

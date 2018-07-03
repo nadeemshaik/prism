@@ -10,7 +10,6 @@
     "immutability-helper": "^2.7.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-infinite": "^0.13.0",
     "react-scripts": "1.1.4"
   },
   "scripts": {

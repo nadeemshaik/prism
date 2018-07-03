@@ -6,7 +6,7 @@ import {STORAGE_PATH} from '../../../constants/asset';
 
 import AssetReader from '../../../readers/asset';
 
-class VideoAsset extends PureComponent {
+class VideoCard extends PureComponent {
 
   state = {
     playVideo: false,
@@ -50,10 +50,10 @@ class VideoAsset extends PureComponent {
   }
 }
 
-VideoAsset.propTypes = {
+VideoCard.propTypes = {
   asset: PropTypes.object.isRequired,
   assetClass: PropTypes.string.isRequired,
   assetHeight: PropTypes.number.isRequired,
 };
 
-export default VideoAsset;
+export default VideoCard;
