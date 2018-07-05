@@ -20,6 +20,7 @@ class ImageCard extends PureComponent {
       <div className={props.assetClass} style={assetStyles} onClick={props.onClick}>
         <ImageTag
           style={imageStyles}
+          placeholderClass={props.placeholderClass}
           src={`${STORAGE_PATH}/${AssetReader.preview(asset)}`}
         />
       </div>
@@ -32,6 +33,7 @@ ImageCard.propTypes = {
   assetClass: PropTypes.string.isRequired,
   assetDimensions: PropTypes.object.isRequired,
   assetPositions: PropTypes.object.isRequired,
+  placeholderClass: PropTypes.string,
 };
 
 export default ImageCard;

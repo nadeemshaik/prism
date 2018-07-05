@@ -2,5 +2,4 @@
   height: calc(100% - 60px);
   display: flex;
   flex-direction: row;
-  background-color: #efefef;
 }

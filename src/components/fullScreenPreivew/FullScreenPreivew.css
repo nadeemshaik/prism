@@ -29,6 +29,11 @@
   user-select: none;
 }
 
+.FullScreenPreivew__assetPlaceholder {
+  color: white;
+  font-size: 5em;
+}
+
 .FullScreenPreivew__header {
   display: flex;
   justify-content: flex-start;

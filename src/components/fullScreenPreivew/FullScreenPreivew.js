@@ -10,6 +10,7 @@ import {getAdjustedImageDimensions, getImageDimensionsByOrientation} from '../..
 
 //components
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ImageTag from '../assetTags/image';
 
 //constants
 import {STORAGE_PATH, ROTATION_BY_ORIENTATION} from '../../constants/asset';
@@ -86,7 +87,14 @@ class FullScreenPreivew extends PureComponent {
       orientation = AssetReader.orientation(currentAsset);
     const imageDimensions = getImageDimensionsByOrientation(currentAsset),
       adjustedDimensions = getAdjustedImageDimensions(imageDimensions, this.state.bodyDimensions, orientation);
-    return <img src={`${STORAGE_PATH}/${currentAsset.src}`} className="FullScreenPreivew__asset" {...adjustedDimensions} style={{transform: ROTATION_BY_ORIENTATION[orientation]}} />;
+    return (
+      <ImageTag
+        src={`${STORAGE_PATH}/${currentAsset.src}`}
+        className="FullScreenPreivew__asset"
+        placeholderClass="FullScreenPreivew__assetPlaceholder"
+        style={{transform: ROTATION_BY_ORIENTATION[orientation], ...adjustedDimensions}}
+      />
+    );
   };
 
   renderBody() {

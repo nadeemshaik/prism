@@ -61,7 +61,6 @@ class AssetGridContainer extends PureComponent {
   }
 
   loadAssets = () => {
-    this.setState({isLoading: true});
     fetchAssets()
       .then(assets => {
         this.reCalculateAssetRows(this.state.assetRows, assets);
@@ -73,7 +72,7 @@ class AssetGridContainer extends PureComponent {
     this.setState({previewAssetIndex});
   }
 
-  closePreview = () => {
+  closeAssetPreview = () => {
     this.setState({previewAssetIndex: undefined});
   }
 
@@ -87,6 +86,7 @@ class AssetGridContainer extends PureComponent {
         assetDimensions={assetDetails.dimensions}
         assetPositions={assetDetails.positions}
         assetClass='AssetGrid__assetContainer'
+        placeholderClass='AssetGrid__assetPlaceholder'
         onClick={() => {this.showAssetPreview(assetDetails.index)}}
       />
     );
@@ -97,7 +97,7 @@ class AssetGridContainer extends PureComponent {
       <FullScreenPreivew
         assets={getAssetsFromAssetRows(this.state.assetRows)}
         currentIndex={this.state.previewAssetIndex}
-        onClosePreview={this.closePreview}
+        onClosePreview={this.closeAssetPreview}
       />
     );
   }

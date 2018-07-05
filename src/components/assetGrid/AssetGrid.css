@@ -7,4 +7,11 @@
 
 .AssetGrid__assetContainer {
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.AssetGrid__assetPlaceholder {
+  color: #cdcdcd;
 }
