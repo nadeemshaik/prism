@@ -2,10 +2,20 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import './FullScreenPreivew.css';
 
+//readers
 import AssetReader from '../../readers/asset';
+
+//utils
+import {getAdjustedImageDimensions, getImageDimensionsByOrientation} from '../../utils/image';
+
+//components
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {STORAGE_PATH} from '../../constants/asset';
+
+//constants
+import {STORAGE_PATH, ROTATION_BY_ORIENTATION} from '../../constants/asset';
 import {CONTROL_TYPES, CONTROL_SECTION_CLASSES, CONTROL_CLASSES, CONTROL_ICONS} from './constants/controls';
+
+
 
 class FullScreenPreivew extends PureComponent {
 
@@ -18,6 +28,19 @@ class FullScreenPreivew extends PureComponent {
       [CONTROL_TYPES.LEFT]: this.decreaseIndex,
       [CONTROL_TYPES.RIGHT]: this.increaseIndex,
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      bodyDimensions: {
+        width: this.previewBody.clientWidth,
+        height: this.previewBody.clientHeight,
+      },
+    });
+  }
+
+  setBodyRef = previewBody => {
+    this.previewBody = previewBody;
   }
 
   increaseIndex = () => {
@@ -46,14 +69,31 @@ class FullScreenPreivew extends PureComponent {
     );
   };
 
-  renderBody() {
-    const {assets} = this.props,
-      {currentIndex} = this.state;
+  renderControls = () => {
+    const {currentIndex} = this.state;
     return (
-      <div className="FullScreenPreivew__body">
-        <img src={`${STORAGE_PATH}/${assets[currentIndex].src}`} className="FullScreenPreivew__asset" />
+      <div>
         {currentIndex !== 0 ? this.renderNavControls(CONTROL_TYPES.LEFT) : null}
-        {currentIndex !== assets.length - 1 ? this.renderNavControls(CONTROL_TYPES.RIGHT) : null}
+        {currentIndex !== this.props.assets.length - 1 ? this.renderNavControls(CONTROL_TYPES.RIGHT) : null}
+      </div>
+    )
+  };
+
+  renderPreviewImage = () => {
+    const {assets} = this.props,
+      {currentIndex} = this.state,
+      currentAsset = assets[currentIndex],
+      orientation = AssetReader.orientation(currentAsset);
+    const imageDimensions = getImageDimensionsByOrientation(currentAsset),
+      adjustedDimensions = getAdjustedImageDimensions(imageDimensions, this.state.bodyDimensions, orientation);
+    return <img src={`${STORAGE_PATH}/${currentAsset.src}`} className="FullScreenPreivew__asset" {...adjustedDimensions} style={{transform: ROTATION_BY_ORIENTATION[orientation]}} />;
+  };
+
+  renderBody() {
+    return (
+      <div className="FullScreenPreivew__body" ref={this.setBodyRef}>
+        {this.state.bodyDimensions ? this.renderPreviewImage() : null}
+        {this.renderControls()}
       </div>
     );
   }
