@@ -17,7 +17,12 @@ class ImageCard extends PureComponent {
       imageStyles = getImageStylesByOrientation(props.assetDimensions, orientation);
 
     return (
-      <div className={props.assetClass} style={assetStyles} onClick={props.onClick}>
+      <div
+        className={props.assetClass}
+        style={assetStyles}
+        onClick={props.onClick}
+        data-id={AssetReader.id(asset)}
+      >
         <ImageTag
           style={imageStyles}
           placeholderClass='asset__imagePlaceholder'

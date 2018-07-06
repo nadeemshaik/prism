@@ -3,6 +3,7 @@
   width: calc(100% - 100px);
   height: 100%;
   overflow-y: auto;
+  scroll-behavior: smooth;
 }
 
 .AssetGrid__assetContainer {

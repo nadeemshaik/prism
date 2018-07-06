@@ -7,11 +7,9 @@ import '../assetTags/image/ImageTag.css';
 
 //libs
 import _debounce from 'lodash/debounce';
-import _partial from 'lodash/partial';
-import _isUndefined from 'lodash/isUndefined';
+import zenscroll from 'zenscroll';
 
 //components
-import FullScreenPreivew from '../fullScreenPreivew';
 import AssetGrid from './AssetGrid';
 
 //utils
@@ -22,12 +20,6 @@ import getScrollBarWidth from '../../utils/getScrollBarWidth';
 //services
 import {fetchAssets} from '../../services/assets';
 
-//readers
-import AssetReader from '../../readers/asset';
-
-//constants
-import {ASSET_TYPE_TO_CARD} from '../../constants/asset';
-
 const PADDING_BESIDES_GRID = 100;
 
 class AssetGridContainer extends PureComponent {
@@ -35,17 +27,23 @@ class AssetGridContainer extends PureComponent {
     containerWidth: 0,
     containerHeight: 0,
     assetRows: [],
-    previewAssetIndex: undefined,
+    scoller: undefined,
   };
 
   componentDidMount() {
     window.addEventListener('resize', this.onResize);
     this.setGridDimensions();
     this.loadAssets();
+    this.setScrollContainer();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
+  }
+
+  setScrollContainer() {
+    const scrollContainer = document.getElementById('AssetGrid__scroller');
+    this.setState({scroller: zenscroll.createScroller(scrollContainer, 500, 30)});
   }
 
   onResize = event => {
@@ -76,45 +74,12 @@ class AssetGridContainer extends PureComponent {
       });
   }
 
-  showAssetPreview = (previewAssetIndex) => {
-    this.setState({previewAssetIndex});
-  }
-
-  closeAssetPreview = () => {
-    this.setState({previewAssetIndex: undefined});
-  }
-
-  renderAssetCard = (assetDetails) => {
-    const {asset} = assetDetails;
-    const AssetCard = ASSET_TYPE_TO_CARD[AssetReader.type(asset)];
-    return (
-      <AssetCard
-        key={AssetReader.id(asset)}
-        asset={asset}
-        assetDimensions={assetDetails.dimensions}
-        assetPositions={assetDetails.positions}
-        assetClass='AssetGrid__assetContainer'
-        onClick={_partial(this.showAssetPreview, assetDetails.index)}
-      />
-    );
-  }
-
-  renderFullscreenPreview() {
-    return (
-      <FullScreenPreivew
-        assets={getAssetsFromAssetRows(this.state.assetRows)}
-        currentIndex={this.state.previewAssetIndex}
-        onClosePreview={this.closeAssetPreview}
-      />
-    );
-  }
-
   renderAssetGrid() {
     const {state}  = this;
     return (
       <AssetGrid
         assetRows={state.assetRows}
-        assetRenderer={this.renderAssetCard}
+        containerScroller={state.scroller}
         containerHeight={state.containerHeight}
       />
     );
@@ -123,9 +88,8 @@ class AssetGridContainer extends PureComponent {
   render() {
     const {state} = this;
     return (
-      <div className='AssetGrid__container' ref={this.setAssetGridRef}>
+      <div className='AssetGrid__container' id='AssetGrid__scroller' ref={this.setAssetGridRef}>
         {state.containerHeight ? this.renderAssetGrid() : null}
-        {!_isUndefined(state.previewAssetIndex) ? this.renderFullscreenPreview() :null}
       </div>
     );
   }

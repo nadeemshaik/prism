@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
+//libs
 import _debounce from 'lodash/debounce';
 
 //styles
@@ -56,12 +57,21 @@ class FullScreenPreivew extends PureComponent {
     });
   }, 50);
 
+  jumpTo = assetIndex => {
+    const asset = this.props.assets[assetIndex];
+    this.props.containerScroller.center(document.querySelector(`[data-id="${AssetReader.id(asset)}"]`));
+  };
+
   increaseIndex = () => {
-    this.setState({currentIndex: this.state.currentIndex + 1});
+    const newAssetIndex = this.state.currentIndex + 1;
+    this.setState({currentIndex: newAssetIndex});
+    this.jumpTo(newAssetIndex);
   };
 
   decreaseIndex = () => {
-    this.setState({currentIndex: this.state.currentIndex - 1});
+    const newAssetIndex = this.state.currentIndex - 1;
+    this.setState({currentIndex: newAssetIndex});
+    this.jumpTo(newAssetIndex);
   };
 
   renderHeader = () => {
@@ -131,6 +141,7 @@ class FullScreenPreivew extends PureComponent {
 FullScreenPreivew.propTypes = {
   assets: PropTypes.array,
   currentIndex: PropTypes.number,
+  containerScroller: PropTypes.func,
 };
 
 FullScreenPreivew.defaultProps = {
