@@ -1,0 +1,12 @@
+.imageTag__placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageTag__errorMsg {
+  color: red;
+  font-size: 12px;
+  padding-top: 6px;
+}

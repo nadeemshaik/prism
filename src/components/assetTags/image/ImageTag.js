@@ -7,8 +7,13 @@ import { faImage } from '@fortawesome/free-regular-svg-icons';
 const IMAGE_LOADING_START = {isLoading: true};
 const IMAGE_LOADING_END = {isLoading: false};
 
-const renderPlaceHolder = className => {
-  return <FontAwesomeIcon className={className} icon={faImage} size="3x"/>;
+const renderPlaceHolder = (className, errorMsg) => {
+  return (
+    <div className="imageTag__placeholder">
+      <FontAwesomeIcon className={className} icon={faImage} size="3x" />
+      {errorMsg ? <span className="imageTag__errorMsg">{errorMsg}</span> : null}
+    </div>
+  );
 };
 
 class ImageTag extends PureComponent {
@@ -26,15 +31,20 @@ class ImageTag extends PureComponent {
 
   isImageLoading = () => {
     this.setState(IMAGE_LOADING_START);
-  }
+  };
 
   imageLoadComplete = () => {
     this.setState(IMAGE_LOADING_END);
   };
 
+  imageLoadError = () => {
+    this.setState({errorMsg: "Error Loading Image"});
+  }
+
   loadImage = src => {
     const image = new Image();
     image.onload = this.imageLoadComplete;
+    image.onerror = this.imageLoadError;
     image.src = src;
     if (!image.complete) {
       this.isImageLoading();
@@ -47,8 +57,8 @@ class ImageTag extends PureComponent {
   }
 
   render() {
-    const {props} = this;
-    return this.state.isLoading ? renderPlaceHolder(props.placeholderClass) : this.renderImage();
+    const {props, state} = this;
+    return state.isLoading ? renderPlaceHolder(props.placeholderClass, state.errorMsg) : this.renderImage();
   }
 }
 

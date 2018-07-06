@@ -3,9 +3,11 @@ import React, {PureComponent} from 'react';
 //css
 import './AssetGrid.css';
 import '../assetCards/assetCards.css';
+import '../assetTags/image/ImageTag.css';
 
 //libs
 import _debounce from 'lodash/debounce';
+import _partial from 'lodash/partial';
 import _isUndefined from 'lodash/isUndefined';
 
 //components
@@ -37,13 +39,19 @@ class AssetGridContainer extends PureComponent {
   };
 
   componentDidMount() {
-    window.onresize = (event) => {
-      this.setGridDimensions();
-      this.reCalculateAssetRows([], getAssetsFromAssetRows(this.state.assetRows));
-    };
+    window.addEventListener('resize', this.onResize);
     this.setGridDimensions();
     this.loadAssets();
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  onResize = event => {
+    this.setGridDimensions();
+    this.reCalculateAssetRows([], getAssetsFromAssetRows(this.state.assetRows));
+  };
 
   reCalculateAssetRows = _debounce((currentAssetRows, newAssets) => {
     const gridParams = getGridParams(currentAssetRows, newAssets, this.state.containerWidth - PADDING_BESIDES_GRID);
@@ -86,8 +94,7 @@ class AssetGridContainer extends PureComponent {
         assetDimensions={assetDetails.dimensions}
         assetPositions={assetDetails.positions}
         assetClass='AssetGrid__assetContainer'
-        placeholderClass='AssetGrid__assetPlaceholder'
-        onClick={() => {this.showAssetPreview(assetDetails.index)}}
+        onClick={_partial(this.showAssetPreview, assetDetails.index)}
       />
     );
   }

@@ -4,6 +4,10 @@
   height: 100%;
 }
 
+.asset__imagePlaceholder {
+  color: #cdcdcd;
+}
+
 .asset_video_preview .overlay {
   position: absolute;
   width: 100%;

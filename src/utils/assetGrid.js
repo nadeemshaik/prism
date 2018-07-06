@@ -25,7 +25,7 @@ const ASSET_ROW = function (assets = []) {
 
 const ASSET_DETAIL = function (asset) {
   this.asset = asset;
-}
+};
 
 export const getAssetsFromAssetRows = assetRows => {
   return _reduce(assetRows, (assets, assetRow) => {

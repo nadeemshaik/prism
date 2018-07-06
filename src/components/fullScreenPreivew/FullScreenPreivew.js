@@ -1,5 +1,9 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+
+import _debounce from 'lodash/debounce';
+
+//styles
 import './FullScreenPreivew.css';
 
 //readers
@@ -16,8 +20,6 @@ import ImageTag from '../assetTags/image';
 import {STORAGE_PATH, ROTATION_BY_ORIENTATION} from '../../constants/asset';
 import {CONTROL_TYPES, CONTROL_SECTION_CLASSES, CONTROL_CLASSES, CONTROL_ICONS} from './constants/controls';
 
-
-
 class FullScreenPreivew extends PureComponent {
 
   constructor(props) {
@@ -32,17 +34,27 @@ class FullScreenPreivew extends PureComponent {
   }
 
   componentDidMount() {
+    this.setBodyDimensions();
+    this.setBodyDimensions.flush();
+    window.addEventListener('resize', this.setBodyDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.setBodyDimensions);
+  }
+
+  setBodyRef = previewBody => {
+    this.previewBody = previewBody;
+  };
+
+  setBodyDimensions = _debounce(() => {
     this.setState({
       bodyDimensions: {
         width: this.previewBody.clientWidth,
         height: this.previewBody.clientHeight,
       },
     });
-  }
-
-  setBodyRef = previewBody => {
-    this.previewBody = previewBody;
-  }
+  }, 50);
 
   increaseIndex = () => {
     this.setState({currentIndex: this.state.currentIndex + 1});
@@ -77,7 +89,7 @@ class FullScreenPreivew extends PureComponent {
         {currentIndex !== 0 ? this.renderNavControls(CONTROL_TYPES.LEFT) : null}
         {currentIndex !== this.props.assets.length - 1 ? this.renderNavControls(CONTROL_TYPES.RIGHT) : null}
       </div>
-    )
+    );
   };
 
   renderPreviewImage = () => {
@@ -109,8 +121,8 @@ class FullScreenPreivew extends PureComponent {
   render() {
     return (
       <div className="FullScreenPreivew__container">
-        {this.renderHeader()}
         {this.renderBody()}
+        {this.renderHeader()}
       </div>
     );
   }
