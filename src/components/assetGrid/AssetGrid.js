@@ -36,7 +36,7 @@ class AssetGrid extends PureComponent {
   renderFullscreenPreview() {
     return (
       <FullScreenPreivew
-        assets={getAssetsFromAssetRows(this.props.assetRows)}
+        assets={this.props.completeAssets}
         currentIndex={this.state.previewAssetIndex}
         onClosePreview={this.closeAssetPreview}
         containerScroller={this.props.containerScroller}
@@ -80,6 +80,7 @@ class AssetGrid extends PureComponent {
 }
 
 AssetGrid.propTypes = {
+  completeAssets: PropTypes.array.isRequired,
   assetRows: PropTypes.array.isRequired,
   assetRenderer: PropTypes.func.isRequired,
   containerHeight: PropTypes.number,

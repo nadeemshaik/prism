@@ -154,10 +154,33 @@ export default class InfiniteScroller {
   generateGridParams = () => {
     this.generateAssetRows(this.assets, this.rowWidth);
     this.containerHeight = generateAssetParams(this.assetRows, this.rowWidth);
+    this.firstRowInRunwayIndex = this.lastRowInRunwayIndex = undefined;
+  };
 
-    return {
-      containerHeight: this.containerHeight,
-      assetRows: this.assetRows,
-    };
-  }
+  getVisibleAssets = ({runwayTop, runwayBottom}) => {
+    let firstRowInRunwayIndex, lastRowInRunwayIndex;
+
+    _forEach(this.assetRows, (assetRow, rowIndex) => {
+      if (_isUndefined(firstRowInRunwayIndex) && assetRow.top >= runwayTop) {
+        firstRowInRunwayIndex = rowIndex;
+      }
+
+      if (assetRow.top >= runwayBottom) {
+        lastRowInRunwayIndex = rowIndex;
+      }
+
+      if (!_isUndefined(lastRowInRunwayIndex) && !_isUndefined(firstRowInRunwayIndex)) {
+        return false;
+      }
+    });
+
+    if (firstRowInRunwayIndex === this.firstRowInRunwayIndex && lastRowInRunwayIndex === this.lastRowInRunwayIndex) {
+      return this.visibleAssets;
+    }
+
+    this.firstRowInRunwayIndex = firstRowInRunwayIndex;
+    this.lastRowInRunwayIndex = lastRowInRunwayIndex;
+    this.visibleAssets = this.assetRows.slice(firstRowInRunwayIndex, lastRowInRunwayIndex);
+    return this.visibleAssets;
+  };
 };
