@@ -77,7 +77,9 @@ class FullScreenPreivew extends PureComponent {
   renderHeader = () => {
     return (
       <div className="FullScreenPreivew__header">
-        <FontAwesomeIcon icon="arrow-left" className="FullScreenPreivew__navIcon" size="1x" onClick={this.props.onClosePreview} />
+        <div className="FullScreenPreivew__backIcon">
+          <FontAwesomeIcon icon="arrow-left" className="FullScreenPreivew__navIcon" size="1x" onClick={this.props.onClosePreview} />
+        </div>
       </div>
     );
   };
