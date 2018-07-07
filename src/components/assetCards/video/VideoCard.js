@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {STORAGE_PATH} from '../../../constants/asset';
+import {STORAGE_PATH} from '../../../constants/gridConfig';
 
 import AssetReader from '../../../readers/asset';
 

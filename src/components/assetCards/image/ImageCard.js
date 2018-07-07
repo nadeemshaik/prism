@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
-import {ROTATION_BY_ORIENTATION, STORAGE_PATH} from '../../../constants/asset';
+import {STORAGE_PATH} from '../../../constants/gridConfig';
+import {ROTATION_BY_ORIENTATION} from '../../../constants/asset';
 import AssetReader from '../../../readers/asset';
 
 import {getImageStylesByOrientation} from '../../../utils/image';

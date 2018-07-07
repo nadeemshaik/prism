@@ -17,7 +17,7 @@ import {ASSET_TYPE_TO_CARD} from '../../constants/asset';
 import FullScreenPreivew from '../fullScreenPreivew';
 
 //utils
-import {getAssetsFromAssetRows} from '../../utils/assetGrid';
+import {getAssetsFromAssetRows} from '../../utils/infiniteScroller';
 
 class AssetGrid extends PureComponent {
 

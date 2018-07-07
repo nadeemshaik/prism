@@ -13,8 +13,7 @@ import zenscroll from 'zenscroll';
 import AssetGrid from './AssetGrid';
 
 //utils
-import {getAssetsFromAssetRows} from '../../utils/assetGrid';
-import {getGridParams} from '../../utils/assetGrid';
+import InfiniteScrollerUtil from '../../utils/infiniteScroller';
 import getScrollBarWidth from '../../utils/getScrollBarWidth';
 
 //services
@@ -24,15 +23,12 @@ const PADDING_BESIDES_GRID = 100;
 
 class AssetGridContainer extends PureComponent {
   state = {
-    containerWidth: 0,
     containerHeight: 0,
     assetRows: [],
     scoller: undefined,
   };
 
   componentDidMount() {
-    window.addEventListener('resize', this.onResize);
-    this.setGridDimensions();
     this.loadAssets();
     this.setScrollContainer();
   }
@@ -46,31 +42,31 @@ class AssetGridContainer extends PureComponent {
     this.setState({scroller: zenscroll.createScroller(scrollContainer, 500, 30)});
   }
 
-  onResize = event => {
-    this.setGridDimensions();
-    this.reCalculateAssetRows([], getAssetsFromAssetRows(this.state.assetRows));
+  getGridWidth = () => {
+    return this.assetGridNode.clientWidth - getScrollBarWidth() - PADDING_BESIDES_GRID;
   };
 
-  reCalculateAssetRows = _debounce((currentAssetRows, newAssets) => {
-    const gridParams = getGridParams(currentAssetRows, newAssets, this.state.containerWidth - PADDING_BESIDES_GRID);
-    this.setState(gridParams);
+  reCalculateAssetRows = _debounce(() => {
+    this.setState(this.infiniteScrollerUtil.generateGridParams());
   }, 300);
 
-  setGridDimensions = () => {
-    this.setState({
-      containerWidth: this.assetGridNode.clientWidth - getScrollBarWidth(),
-    });
+  onResize = event => {
+    this.infiniteScrollerUtil.setParams(undefined, this.getGridWidth());
+    this.reCalculateAssetRows();
   };
 
   setAssetGridRef = ref => {
     this.assetGridNode = ref;
-  }
+  };
 
   loadAssets = () => {
     fetchAssets()
       .then(assets => {
-        this.reCalculateAssetRows(this.state.assetRows, assets);
+        this.infiniteScrollerUtil = new InfiniteScrollerUtil(assets, this.getGridWidth());
+        this.reCalculateAssetRows();
         this.reCalculateAssetRows.flush();
+        // resize sould only start after first round of calculation
+        window.addEventListener('resize', this.onResize);
       });
   }
 

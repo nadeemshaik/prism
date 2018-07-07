@@ -18,7 +18,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ImageTag from '../assetTags/image';
 
 //constants
-import {STORAGE_PATH, ROTATION_BY_ORIENTATION} from '../../constants/asset';
+import {STORAGE_PATH} from '../../constants/gridConfig';
+import {ROTATION_BY_ORIENTATION} from '../../constants/asset';
 import {CONTROL_TYPES, CONTROL_SECTION_CLASSES, CONTROL_CLASSES, CONTROL_ICONS} from './constants/controls';
 
 class FullScreenPreivew extends PureComponent {
