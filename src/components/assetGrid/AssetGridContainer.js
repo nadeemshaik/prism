@@ -76,7 +76,7 @@ class AssetGridContainer extends PureComponent {
     });
   }, 300);
 
-  onResize = event => {
+  onResize = () => {
     this.infiniteScrollerUtil.setParams(undefined, this.getGridWidth());
     this.reCalculateAssetRows();
   };

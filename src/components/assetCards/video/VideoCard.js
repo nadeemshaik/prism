@@ -40,8 +40,7 @@ class VideoCard extends PureComponent {
 
 
   render() {
-    const {props} = this,
-      {asset} = props;
+    const {props} = this;
     return (
       <div className={props.assetClass} style={{height: props.assetHeight}}>
         {this.state.playVideo ? this.renderVideo() : this.renderPreview()}

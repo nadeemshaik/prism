@@ -6,10 +6,11 @@ export const getImageStylesByOrientation = (dimensions, orientation) => {
     case 3:
       return {transform: ROTATION_BY_ORIENTATION[orientation], ...dimensions};
     case 6:
-    case 8:
+    case 8: {
       const newDimensions = {height: dimensions.width, width: dimensions.height};
       const top = (newDimensions.width - newDimensions.height) / 2;
       return {...newDimensions, top, left: -top, position: 'absolute', transform: ROTATION_BY_ORIENTATION[orientation]};
+    }
     default:
       return dimensions;
   }
@@ -25,7 +26,7 @@ export const getImageDimensionsByOrientation = (asset) => {
     width: tiltedOrientation ? height : width,
     height: tiltedOrientation ? width : height,
   };
-}
+};
 
 export const getAdjustedImageDimensions = (imageDimensions, bodyDimensions, orientation) => {
   let adjustedDimensions = {},

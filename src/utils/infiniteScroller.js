@@ -2,9 +2,7 @@ import {MAX_ASSET_HEIGHT, PADDING_TOP_ASSET, PADDING_LEFT_ASSET} from '../consta
 
 import update from 'immutability-helper';
 import _forEach from 'lodash/forEach';
-import _reduce from 'lodash/reduce';
 import _get from 'lodash/get';
-import _map from 'lodash/map';
 import _isUndefined from 'lodash/isUndefined';
 
 import AssetReader from '../readers/asset';
@@ -23,13 +21,6 @@ const ASSET_ROW = function () {
 
 const ASSET_DETAIL = function (asset) {
   this.asset = asset;
-};
-
-export const getAssetsFromAssetRows = assetRows => {
-  return _reduce(assetRows, (assets, assetRow) => {
-    assets.push(..._map(assetRow.assets, 'asset'));
-    return assets;
-  }, []);
 };
 
 export const getAssetAspectRatio = (asset, assetIndex) => {
@@ -183,4 +174,4 @@ export default class InfiniteScroller {
     this.visibleAssets = this.assetRows.slice(firstRowInRunwayIndex, lastRowInRunwayIndex);
     return this.visibleAssets;
   };
-};
+}
