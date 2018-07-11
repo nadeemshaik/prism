@@ -95,7 +95,8 @@ export const generateAssetParams = (assetRows, rowWidth) => {
     containerHeight = 0;
 
   _forEach(assetRows, assetRow => {
-    const rowHeight = getAssetRowHeight(assetRow, rowWidth);
+    let rowHeight = getAssetRowHeight(assetRow, rowWidth);
+    rowHeight = rowHeight > MAX_ASSET_HEIGHT ? MAX_ASSET_HEIGHT + PADDING_TOP_ASSET : rowHeight;
     assetRow.top = currentRowTop;
 
     _forEach(assetRow.assets, (assetDetails, assetIndex) => {

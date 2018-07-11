@@ -6,32 +6,19 @@ import {STORAGE_PATH} from '../../../constants/gridConfig';
 
 import AssetReader from '../../../readers/asset';
 
+import ImageTag from '../../assetTags/image';
+
 class VideoCard extends PureComponent {
 
-  state = {
-    playVideo: false,
-  };
-
-  setPreviewImgRef = previewImg => {
-    this.previewImg = previewImg;
-  }
-
-  playVideo = () => {
-    this.setState({playVideo: true});
-  }
-
-  renderVideo() {
-    return <video className='asset_video' src={`${STORAGE_PATH}/${AssetReader.src(this.props.asset)}`} controls autoPlay />;
-  }
-
   renderPreview() {
+    const {props} = this;
     return (
-      <div className='asset_video_preview'>
+      <div className='asset_video_preview' style={props.assetDimensions} onClick={props.onClick}>
         <div className='overlay'></div>
-        <FontAwesomeIcon icon="play" className='playAction' size="3x" onClick={this.playVideo} />
-        <img
-          ref={this.setPreviewImgRef}
-          className='asset_image'
+        <FontAwesomeIcon icon="play" className='playAction'/>
+        <ImageTag
+          style={props.assetDimensions}
+          placeholderClass='asset__imagePlaceholder'
           src={`${STORAGE_PATH}/${AssetReader.preview(this.props.asset)}`}
         />
       </div>
@@ -40,10 +27,12 @@ class VideoCard extends PureComponent {
 
 
   render() {
-    const {props} = this;
+    const {props} = this,
+        assetStyles = {...props.assetDimensions, ...props.assetPositions, position: 'absolute'};
+
     return (
-      <div className={props.assetClass} style={{height: props.assetHeight}}>
-        {this.state.playVideo ? this.renderVideo() : this.renderPreview()}
+      <div className={props.assetClass} style={assetStyles} data-id={AssetReader.id(props.asset)}>
+        {this.renderPreview()}
       </div>
     );
   }

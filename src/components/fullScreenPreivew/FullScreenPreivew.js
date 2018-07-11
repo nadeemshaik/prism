@@ -19,6 +19,7 @@ import ImageTag from '../assetTags/image';
 
 //constants
 import {STORAGE_PATH} from '../../constants/gridConfig';
+import ASSET_TYPES from '../../constants/assetTypes';
 import {ROTATION_BY_ORIENTATION} from '../../constants/asset';
 import {CONTROL_TYPES, CONTROL_SECTION_CLASSES, CONTROL_CLASSES, CONTROL_ICONS} from './constants/controls';
 
@@ -85,9 +86,9 @@ class FullScreenPreivew extends PureComponent {
     );
   };
 
-  renderNavControls = (controlType) => {
+  renderNavControls = (controlType, assetType) => {
     return (
-      <div className={`FullScreenPreivew__control-section ${CONTROL_SECTION_CLASSES[controlType]}`}>
+      <div className={`FullScreenPreivew__control-section ${CONTROL_SECTION_CLASSES[controlType]} ${CONTROL_SECTION_CLASSES[assetType]}`}>
         <div className={`FullScreenPreivew__control ${CONTROL_CLASSES[controlType]} `} onClick={this.controlToIndexer[controlType]} >
           <FontAwesomeIcon icon={CONTROL_ICONS[controlType]} className={`FullScreenPreivew__navIcon FullScreenPreivew__controlIcon`}/>
         </div>
@@ -96,25 +97,24 @@ class FullScreenPreivew extends PureComponent {
   };
 
   renderControls = () => {
-    const {currentIndex} = this.state;
+    const {currentIndex} = this.state,
+      {assets} = this.props,
+      assetType = AssetReader.type(assets[currentIndex]);
     return (
       <div>
-        {currentIndex !== 0 ? this.renderNavControls(CONTROL_TYPES.LEFT) : null}
-        {currentIndex !== this.props.assets.length - 1 ? this.renderNavControls(CONTROL_TYPES.RIGHT) : null}
+        {currentIndex !== 0 ? this.renderNavControls(CONTROL_TYPES.LEFT, assetType) : null}
+        {currentIndex !== this.props.assets.length - 1 ? this.renderNavControls(CONTROL_TYPES.RIGHT, assetType) : null}
       </div>
     );
   };
 
-  renderPreviewImage = () => {
-    const {assets} = this.props,
-      {currentIndex} = this.state,
-      currentAsset = assets[currentIndex],
-      orientation = AssetReader.orientation(currentAsset);
+  renderPreviewImage = (currentAsset) => {
+    const orientation = AssetReader.orientation(currentAsset);
     const imageDimensions = getImageDimensionsByOrientation(currentAsset),
       adjustedDimensions = getAdjustedImageDimensions(imageDimensions, this.state.bodyDimensions, orientation);
     return (
       <ImageTag
-        src={`${STORAGE_PATH}/${currentAsset.src}`}
+        src={`${STORAGE_PATH}/${AssetReader.src(currentAsset)}`}
         className="FullScreenPreivew__asset"
         placeholderClass="FullScreenPreivew__assetPlaceholder"
         style={{transform: ROTATION_BY_ORIENTATION[orientation], ...adjustedDimensions}}
@@ -122,10 +122,28 @@ class FullScreenPreivew extends PureComponent {
     );
   };
 
+  renderPreviewVideo = (currentAsset) => {
+    return (
+      <video
+        src={`${STORAGE_PATH}/${AssetReader.src(currentAsset)}`}
+        className="FullScreenPreivew__asset"
+        controls
+      />
+    );
+  };
+
+  renderPreview = () => {
+    const {assets} = this.props,
+      {currentIndex} = this.state,
+      currentAsset = assets[currentIndex];
+
+    return AssetReader.type(currentAsset) === ASSET_TYPES.IMAGE ? this.renderPreviewImage(currentAsset) : this.renderPreviewVideo(currentAsset);
+  };
+
   renderBody() {
     return (
       <div className="FullScreenPreivew__body" ref={this.setBodyRef}>
-        {this.state.bodyDimensions ? this.renderPreviewImage() : null}
+        {this.state.bodyDimensions ? this.renderPreview() : null}
         {this.renderControls()}
       </div>
     );

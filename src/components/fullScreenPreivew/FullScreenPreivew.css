@@ -89,19 +89,33 @@
 .FullScreenPreivew__control {
   position: absolute;
   top: 50%;
-  display: none;
+  margin-top: -28px;
   padding: 10px;
   border-radius: 50%;
   background: rgba(66,66,66,0.54);
   width: 56px;
   height: 56px;
+  display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  pointer-events: all;
 }
 
-.FullScreenPreivew__control-section:hover > .FullScreenPreivew__control {
-  display: flex;
+.FullScreenPreivew__control-section.FullScreenPreivew__control-section-video {
+  pointer-events: none;
+}
+
+.FullScreenPreivew__control-section > .FullScreenPreivew__control {
+  opacity: 0;
+}
+
+.FullScreenPreivew__control-section-image:hover > .FullScreenPreivew__control {
+  opacity: 1;
+}
+
+.FullScreenPreivew__control-section-video > .FullScreenPreivew__control:hover {
+  opacity: 1;
 }
 
 .FullScreenPreivew__control-left {
