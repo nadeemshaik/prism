@@ -12,3 +12,7 @@
   justify-content: center;
   align-items: center;
 }
+
+.AssetGrid__focusedImage {
+  border: 4px solid #039BE5;
+}

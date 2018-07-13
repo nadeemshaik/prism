@@ -9,23 +9,29 @@ import {getImageStylesByOrientation} from '../../../utils/image';
 import ImageTag from '../../assetTags/image';
 
 class ImageCard extends PureComponent {
+
+  componentWillUnmount() {
+    this.props.onUnmount();
+  }
+
   render() {
     const {props} = this,
       {asset} = props,
-      assetStyles = {...props.assetDimensions, ...props.assetPositions, position: 'absolute'},
+      assetStyles = {...props.dimensions, ...props.positions, position: 'absolute'},
       orientation = AssetReader.orientation(asset),
-      imageStyles = getImageStylesByOrientation(props.assetDimensions, orientation);
+      imageStyles = getImageStylesByOrientation(props.dimensions, orientation);
 
     return (
       <div
         className={props.assetClass}
         style={assetStyles}
-        onClick={props.onClick}
+        onClick={props.openAssetPreview}
         data-id={AssetReader.id(asset)}
       >
         <ImageTag
           style={imageStyles}
           placeholderClass='asset__imagePlaceholder'
+          className={props.previewImageClass}
           src={`${STORAGE_PATH}/${AssetReader.preview(asset)}`}
         />
       </div>
@@ -36,8 +42,11 @@ class ImageCard extends PureComponent {
 ImageCard.propTypes = {
   asset: PropTypes.object.isRequired,
   assetClass: PropTypes.string.isRequired,
-  assetDimensions: PropTypes.object.isRequired,
-  assetPositions: PropTypes.object.isRequired,
+  previewImageClass: PropTypes.string,
+  dimensions: PropTypes.object,
+  positions: PropTypes.object,
+  onUnmount: PropTypes.func.isRequired,
+  openAssetPreview: PropTypes.func.isRequired,
 };
 
 export default ImageCard;

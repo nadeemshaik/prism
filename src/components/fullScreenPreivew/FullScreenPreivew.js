@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 //libs
 import _debounce from 'lodash/debounce';
+import _partial from 'lodash/partial';
 
 //styles
 import './FullScreenPreivew.css';
@@ -24,15 +25,12 @@ import {ROTATION_BY_ORIENTATION} from '../../constants/asset';
 import {CONTROL_TYPES, CONTROL_SECTION_CLASSES, CONTROL_CLASSES, CONTROL_ICONS} from './constants/controls';
 
 class FullScreenPreivew extends PureComponent {
-
   constructor(props) {
     super(props);
-    this.state = {
-      currentIndex: props.currentIndex,
-    };
+    this.state = {};
     this.controlToIndexer = {
-      [CONTROL_TYPES.LEFT]: this.decreaseIndex,
-      [CONTROL_TYPES.RIGHT]: this.increaseIndex,
+      [CONTROL_TYPES.LEFT]: _partial(props.changePreview, -1),
+      [CONTROL_TYPES.RIGHT]: _partial(props.changePreview, 1),
     };
   }
 
@@ -59,23 +57,6 @@ class FullScreenPreivew extends PureComponent {
     });
   }, 50);
 
-  jumpTo = assetIndex => {
-    const asset = this.props.assets[assetIndex];
-    this.props.containerScroller.center(document.querySelector(`[data-id="${AssetReader.id(asset)}"]`));
-  };
-
-  increaseIndex = () => {
-    const newAssetIndex = this.state.currentIndex + 1;
-    this.setState({currentIndex: newAssetIndex});
-    this.jumpTo(newAssetIndex);
-  };
-
-  decreaseIndex = () => {
-    const newAssetIndex = this.state.currentIndex - 1;
-    this.setState({currentIndex: newAssetIndex});
-    this.jumpTo(newAssetIndex);
-  };
-
   renderHeader = () => {
     return (
       <div className="FullScreenPreivew__header">
@@ -97,8 +78,7 @@ class FullScreenPreivew extends PureComponent {
   };
 
   renderControls = () => {
-    const {currentIndex} = this.state,
-      {assets} = this.props,
+    const {assets, currentIndex} = this.props,
       assetType = AssetReader.type(assets[currentIndex]);
     return (
       <div>
@@ -133,8 +113,7 @@ class FullScreenPreivew extends PureComponent {
   };
 
   renderPreview = () => {
-    const {assets} = this.props,
-      {currentIndex} = this.state,
+    const {assets, currentIndex} = this.props,
       currentAsset = assets[currentIndex];
 
     return AssetReader.type(currentAsset) === ASSET_TYPES.IMAGE ? this.renderPreviewImage(currentAsset) : this.renderPreviewVideo(currentAsset);
@@ -162,7 +141,9 @@ class FullScreenPreivew extends PureComponent {
 FullScreenPreivew.propTypes = {
   assets: PropTypes.array,
   currentIndex: PropTypes.number,
-  containerScroller: PropTypes.func,
+  containerScroller: PropTypes.object,
+  onClosePreview: PropTypes.func.isRequired,
+  changePreview: PropTypes.func.isRequired,
 };
 
 FullScreenPreivew.defaultProps = {

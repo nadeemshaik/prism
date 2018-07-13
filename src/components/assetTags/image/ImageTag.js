@@ -20,7 +20,10 @@ class ImageTag extends PureComponent {
   constructor(props) {
     super(props);
     this.state = IMAGE_LOADING_START;
-    this.loadImage(props.src);
+  }
+
+  componentDidMount() {
+    this.loadImage(this.props.src);
   }
 
   componentDidUpdate(prevProps) {
@@ -53,7 +56,7 @@ class ImageTag extends PureComponent {
 
   renderImage = () => {
     const {props} = this;
-    return <img src={props.src} className={props.className} alt="image" style={props.style} />;
+    return <img src={props.src} className={props.className} alt="asset_preview_image" style={props.style} />;
   }
 
   render() {
@@ -64,6 +67,7 @@ class ImageTag extends PureComponent {
 
 ImageTag.propTypes = {
   src: PropTypes.string,
+  style: PropTypes.object,
   className: PropTypes.string,
   placeholderClass: PropTypes.string,
 };

@@ -6,6 +6,7 @@ import _forEach from 'lodash/forEach';
 import _reduce from 'lodash/reduce';
 import _partial from 'lodash/partial';
 import _isUndefined from 'lodash/isUndefined';
+import _noop from 'lodash/noop';
 
 //readers
 import AssetReader from '../../readers/asset';
@@ -14,28 +15,18 @@ import AssetReader from '../../readers/asset';
 import {ASSET_TYPE_TO_CARD} from '../../constants/asset';
 
 //components
+import GridEvents from './GridEvents';
 import FullScreenPreivew from '../fullScreenPreivew';
 
 class AssetGrid extends PureComponent {
-
-  state = {
-    previewAssetIndex: undefined,
-  };
-
-  showAssetPreview = (previewAssetIndex) => {
-    this.setState({previewAssetIndex});
-  }
-
-  closeAssetPreview = () => {
-    this.setState({previewAssetIndex: undefined});
-  }
 
   renderFullscreenPreview() {
     return (
       <FullScreenPreivew
         assets={this.props.completeAssets}
-        currentIndex={this.state.previewAssetIndex}
-        onClosePreview={this.closeAssetPreview}
+        currentIndex={this.props.previewAssetIndex}
+        onClosePreview={this.props.closeAssetPreview}
+        changePreview={this.props.changePreview}
         containerScroller={this.props.containerScroller}
       />
     );
@@ -44,14 +35,15 @@ class AssetGrid extends PureComponent {
   renderAssetCard = (assetDetails) => {
     const {asset} = assetDetails;
     const AssetCard = ASSET_TYPE_TO_CARD[AssetReader.type(asset)];
+    const isFocused = this.props.focusedAssetIndex === assetDetails.index;
     return (
       <AssetCard
         key={AssetReader.id(asset)}
-        asset={asset}
-        assetDimensions={assetDetails.dimensions}
-        assetPositions={assetDetails.positions}
+        {...assetDetails} //asset, dimensions, positions, index
         assetClass='AssetGrid__assetContainer'
-        onClick={_partial(this.showAssetPreview, assetDetails.index)}
+        previewImageClass={isFocused ? 'AssetGrid__focusedImage' : ''}
+        openAssetPreview={_partial(this.props.showAssetPreview, assetDetails.index)}
+        onUnmount={isFocused ? this.props.clearFocus : _noop}
       />
     );
   }
@@ -70,7 +62,7 @@ class AssetGrid extends PureComponent {
             }, [])
           }
         </div>
-        {!_isUndefined(this.state.previewAssetIndex) ? this.renderFullscreenPreview() :null}
+        {!_isUndefined(this.props.previewAssetIndex) ? this.renderFullscreenPreview() :null}
       </div>
     );
   }
@@ -79,9 +71,14 @@ class AssetGrid extends PureComponent {
 AssetGrid.propTypes = {
   completeAssets: PropTypes.array.isRequired,
   assetRows: PropTypes.array.isRequired,
-  assetRenderer: PropTypes.func.isRequired,
+  previewAssetIndex: PropTypes.number,
+  focusedAssetIndex: PropTypes.number,
+  closeAssetPreview: PropTypes.func.isRequired,
+  showAssetPreview: PropTypes.func.isRequired,
+  changePreview: PropTypes.func.isRequired,
+  clearFocus: PropTypes.func.isRequired,
   containerHeight: PropTypes.number,
   containerScroller: PropTypes.object,
 };
 
-export default AssetGrid;
+export default GridEvents(AssetGrid);

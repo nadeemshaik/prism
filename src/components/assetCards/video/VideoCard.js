@@ -10,15 +10,20 @@ import ImageTag from '../../assetTags/image';
 
 class VideoCard extends PureComponent {
 
+  componentWillUnmount() {
+    this.props.onUnmount();
+  }
+
   renderPreview() {
     const {props} = this;
     return (
-      <div className='asset_video_preview' style={props.assetDimensions} onClick={props.onClick}>
-        <div className='overlay'></div>
+      <div className='asset_video_preview' style={props.dimensions} onClick={props.openAssetPreview}>
+        <div className={`overlay ${props.previewImageClass}`}></div>
         <FontAwesomeIcon icon="play" className='playAction'/>
         <ImageTag
-          style={props.assetDimensions}
+          style={props.dimensions}
           placeholderClass='asset__imagePlaceholder'
+          className={props.previewImageClass}
           src={`${STORAGE_PATH}/${AssetReader.preview(this.props.asset)}`}
         />
       </div>
@@ -28,7 +33,7 @@ class VideoCard extends PureComponent {
 
   render() {
     const {props} = this,
-        assetStyles = {...props.assetDimensions, ...props.assetPositions, position: 'absolute'};
+        assetStyles = {...props.dimensions, ...props.positions, position: 'absolute'};
 
     return (
       <div className={props.assetClass} style={assetStyles} data-id={AssetReader.id(props.asset)}>
@@ -41,7 +46,11 @@ class VideoCard extends PureComponent {
 VideoCard.propTypes = {
   asset: PropTypes.object.isRequired,
   assetClass: PropTypes.string.isRequired,
-  assetHeight: PropTypes.number.isRequired,
+  previewImageClass: PropTypes.string,
+  dimensions: PropTypes.object,
+  positions: PropTypes.object,
+  onUnmount: PropTypes.func.isRequired,
+  openAssetPreview: PropTypes.func.isRequired,
 };
 
 export default VideoCard;
